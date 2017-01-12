@@ -30,6 +30,9 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -54,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseDatabase mFirebaseDatabase;
     private DatabaseReference mMessagesDatabaseReference;
+    private ChildEventListener mChildEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,13 +122,50 @@ public class MainActivity extends AppCompatActivity {
                 FriendlyMessage friendlyMessage = new FriendlyMessage(mMessageEditText.getText().
                                                                       toString(), mUsername,
                                                                       null);
-                mMessagesDatabaseReference.push().setValue(friendlyMessage); // push() creates key
+                mMessagesDatabaseReference.push()                    // push() creates idkey
+                                          .setValue(friendlyMessage);
 
 
                 // Clear input box
                 mMessageEditText.setText("");
             }
         });
+
+        // Listens to changes in the database
+        mChildEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                // Get data from database and deserialize
+                FriendlyMessage fm = dataSnapshot.getValue(FriendlyMessage.class);
+
+                mMessageAdapter.add(fm);
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        };
+
+        //Connects listener to specific reference in the database
+        mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
+
     }
 
     @Override
