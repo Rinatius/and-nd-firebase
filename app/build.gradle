@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 
 repositories {
     mavenLocal()
+    maven { url 'https://maven.fabric.io/public' }
     flatDir {
         dirs 'libs'
     }
