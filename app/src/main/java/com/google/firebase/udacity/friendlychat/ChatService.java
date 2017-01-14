@@ -7,8 +7,19 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class ChatService extends Service {
     private static final int ONGOING_NOTIFICATION_ID = 1;
+
+    //Firebase variables
+    private FirebaseDatabase mFirebaseDatabase;
+    private DatabaseReference mMessagesDatabaseReference;
+    private ChildEventListener mChildEventListener;
 
     public ChatService() {
     }
@@ -35,6 +46,68 @@ public class ChatService extends Service {
 
         startForeground(ONGOING_NOTIFICATION_ID, notification);
         Toast.makeText(ChatService.this, "Chat service started!", Toast.LENGTH_LONG).show();
+
+        //Init references to database
+        mFirebaseDatabase = FirebaseDatabase.getInstance();
+        mMessagesDatabaseReference = mFirebaseDatabase.getReference().child("messages");
+
+        attachDatabaseListener();
+
         return super.onStartCommand(intent, flags, startId);
     }
+
+    @Override
+    public void onDestroy() {
+        detachDatabaseListener();
+        super.onDestroy();
+    }
+
+    private void attachDatabaseListener() {
+        if (mChildEventListener == null){
+            // Listens to changes in the database
+            mChildEventListener = new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+                    // Get data from database and deserialize
+                    FriendlyMessage fm = dataSnapshot.getValue(FriendlyMessage.class);
+
+                    Toast.makeText(ChatService.this, fm.getText(), Toast.LENGTH_LONG).show();
+
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            };
+
+            //Connects listener to specific reference in the database
+            mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
+        }
+    }
+
+    private void detachDatabaseListener() {
+        if (mChildEventListener != null) {
+            mMessagesDatabaseReference.removeEventListener(mChildEventListener);
+            mChildEventListener = null;
+        }
+
+    }
+
 }
