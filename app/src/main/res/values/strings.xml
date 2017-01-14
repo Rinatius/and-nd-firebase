@@ -4,4 +4,7 @@
     <string name="send_button_label">Send</string>
     <string name="start_sevice_button_label">Start service</string>
     <string name="stop_sevice_button_label">Stop service</string>
+    <string name="notification_title">Chat Service</string>
+    <string name="notification_message">Toast chat is active</string>
+    <string name="ticker_text">Ticker text</string>
 </resources>
