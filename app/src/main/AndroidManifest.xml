@@ -17,7 +17,7 @@
         </activity>
 
         <service
-            android:name=".ChatService"
+            android:name=".ProxyService"
             android:enabled="true"
             android:exported="true"></service>
     </application>

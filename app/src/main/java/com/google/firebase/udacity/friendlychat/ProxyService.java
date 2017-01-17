@@ -13,7 +13,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class ChatService extends Service {
+public class ProxyService extends Service {
     private static final int ONGOING_NOTIFICATION_ID = 1;
 
     //Firebase variables
@@ -21,7 +21,7 @@ public class ChatService extends Service {
     private DatabaseReference mMessagesDatabaseReference;
     private ChildEventListener mChildEventListener;
 
-    public ChatService() {
+    public ProxyService() {
     }
 
     @Override
@@ -45,7 +45,7 @@ public class ChatService extends Service {
                 .build();
 
         startForeground(ONGOING_NOTIFICATION_ID, notification);
-        Toast.makeText(ChatService.this, "Chat service started!", Toast.LENGTH_LONG).show();
+        Toast.makeText(ProxyService.this, "Chat service started!", Toast.LENGTH_LONG).show();
 
         //Init references to database
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -72,7 +72,7 @@ public class ChatService extends Service {
                     // Get data from database and deserialize
                     FriendlyMessage fm = dataSnapshot.getValue(FriendlyMessage.class);
 
-                    Toast.makeText(ChatService.this, fm.getText(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(ProxyService.this, fm.getText(), Toast.LENGTH_LONG).show();
 
                 }
 

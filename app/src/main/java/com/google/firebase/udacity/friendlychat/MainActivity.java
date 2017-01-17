@@ -153,20 +153,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //Start ChatService on click
+        //Start ProxyService on click
         startServiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, ChatService.class);
+                Intent i = new Intent(MainActivity.this, ProxyService.class);
                 startService(i);
             }
         });
 
-        //Stop ChatService on click
+        //Stop ProxyService on click
         stopServiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, ChatService.class);
+                Intent i = new Intent(MainActivity.this, ProxyService.class);
                 stopService(i);
             }
         });
