@@ -3,10 +3,13 @@ package com.google.firebase.udacity.friendlychat;
 import android.app.Activity;
 import android.content.Intent;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 /**
  * Objects of this class prepare and make calls from
  * user identified by callerId to users identified by
- * ids in caleeIds array.
+ * ids in caleeIds array. Class methods work only in case
+ * calling user is authenticated.
  *
  */
 public class CallMaker extends Object{
@@ -14,11 +17,14 @@ public class CallMaker extends Object{
     private String callerId;
     private String[] calleeIds;
     private Activity context;
+    private FirebaseDatabase database;
 
-    public CallMaker(String callerId, String[] calleeIds, Activity context) {
+    public CallMaker(String callerId, String[] calleeIds,
+                     Activity context, FirebaseDatabase database) {
         this.callerId = callerId;
         this.calleeIds = calleeIds;
         this.context = context;
+        this.database = database;
     }
 
     public void makeCall() {

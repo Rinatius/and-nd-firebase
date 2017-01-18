@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 callMaker = new CallMaker(mFirebaseAuth.getCurrentUser().getUid(),
-                                                    calleeIds, MainActivity.this);
+                                          calleeIds, MainActivity.this, mFirebaseDatabase);
                 callMaker.makeCall();
                 //Intent i = new Intent(MainActivity.this, ProxyService.class);
                 //startService(i);
