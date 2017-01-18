@@ -74,8 +74,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
-    //List of users to cal
+    //Call variables
     private String[] calleeIds;
+    CallMaker callMaker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,11 +164,11 @@ public class MainActivity extends AppCompatActivity {
         startServiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CallMaker callMaker = new CallMaker(mFirebaseAuth.getCurrentUser().getUid(),
-                                                    calleeIds);
+                callMaker = new CallMaker(mFirebaseAuth.getCurrentUser().getUid(),
+                                                    calleeIds, MainActivity.this);
                 callMaker.makeCall();
-                Intent i = new Intent(MainActivity.this, ProxyService.class);
-                startService(i);
+                //Intent i = new Intent(MainActivity.this, ProxyService.class);
+                //startService(i);
             }
         });
 
@@ -175,8 +176,9 @@ public class MainActivity extends AppCompatActivity {
         stopServiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, ProxyService.class);
-                stopService(i);
+                callMaker.finishCall();
+                //Intent i = new Intent(MainActivity.this, ProxyService.class);
+                //stopService(i);
             }
         });
 
