@@ -1,6 +1,7 @@
 package com.google.firebase.udacity.friendlychat;
 
 import android.app.Activity;
+import android.content.Intent;
 
 /**
  * Objects of this class prepare and make calls from
@@ -21,10 +22,12 @@ public class CallMaker extends Object{
     }
 
     public void makeCall() {
-
+        Intent intent = new Intent(context, ProxyService.class);
+        context.startService(intent);
     }
 
     public void finishCall() {
-
+        Intent intent = new Intent(context, ProxyService.class);
+        context.stopService(intent);
     }
 }
