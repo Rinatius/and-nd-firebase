@@ -12,6 +12,8 @@ public class CallMaker extends Object{
     private String[] calleeIds;
 
     public CallMaker(String callerId, String[] calleeIds) {
+        this.callerId = callerId;
+        this.calleeIds = calleeIds;
     }
 
     public void makeCall() {
