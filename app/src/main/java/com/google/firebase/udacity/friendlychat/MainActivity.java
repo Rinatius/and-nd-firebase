@@ -74,6 +74,9 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
+    //List of users to cal
+    private String[] calleeIds;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +90,9 @@ public class MainActivity extends AppCompatActivity {
 
         //Init Firebase authentication
         mFirebaseAuth = FirebaseAuth.getInstance();
+
+        //Initialize callees list manually with data from database
+        calleeIds = new String[] {"X0nL7ueIw8WKPJTnNhe9mOCenmv1", "eSdn9h5rjZhHkMk6qcMjkAoJnvG3"};
 
         // Initialize references to views
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -157,6 +163,9 @@ public class MainActivity extends AppCompatActivity {
         startServiceButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CallMaker callMaker = new CallMaker(mFirebaseAuth.getCurrentUser().getUid(),
+                                                    calleeIds);
+                callMaker.makeCall();
                 Intent i = new Intent(MainActivity.this, ProxyService.class);
                 startService(i);
             }
