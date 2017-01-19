@@ -1,5 +1,10 @@
 package com.google.firebase.udacity.friendlychat;
 
+import com.google.firebase.database.Exclude;
+
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Created by rin on 1/19/17.
  */
@@ -30,5 +35,14 @@ public class VixiCall {
 
     public void setSessionId(String sessionId) {
         this.sessionId = sessionId;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("callerId", callerId);
+        result.put("sessionId", sessionId);
+
+        return result;
     }
 }

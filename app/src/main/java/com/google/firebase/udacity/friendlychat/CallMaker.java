@@ -6,6 +6,7 @@ import android.content.Intent;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -39,11 +40,8 @@ public class CallMaker extends Object{
     public void makeCall() {
         VixiCall call = new VixiCall(callerId);
         String callKey = saveCallToDataBase(call);
-        //DatabaseReference thisCallDbReference = callsDbReference.child(callKey);
-        //FirebaseHelper.addArrayAsChildren(calleeIds,
-        //                                  thisCallDbReference.child(MyConstants.FIREBASE_CALLEES),
-        //                                  database);
-        //if (isSessionIdPresent(thisCallDbReference)) startProxyService(thisCallDbReference);
+        DatabaseReference currentCallDbReference = callsDbReference.child(callKey);
+        //if (isSessionIdPresent(currentCallDbReference)) startProxyService(thisCallDbReference);
     }
 
     public void finishCall() {
@@ -54,7 +52,26 @@ public class CallMaker extends Object{
     //Saves call to database under newly generated unique key, returns this key as String.
     private String saveCallToDataBase(VixiCall call) {
         String key = callsDbReference.push().getKey();
-        callsDbReference.child(key).setValue(call);
+
+        /*
+         * Currently there is no need to use data fan-out (updateChildren)
+         * for saving new call, but in future we will use fan-out to save call
+         * to multiple locations in the database.
+         */
+
+        Map<String, Object> callValues = call.toMap();
+        Map<String, Object> childUpdates = new HashMap<>();
+        childUpdates.put("/" + key, callValues);
+        callsDbReference.updateChildren(childUpdates);
+
+        Map<String, Object> calleesUpdates = new HashMap<>();
+        for (String calleeId : calleeIds){
+            calleesUpdates.put("/" + key + "/"
+                             + MyConstants.FIREBASE_CALLEES + "/"
+                             + calleeId, 0);
+        }
+        callsDbReference.updateChildren(calleesUpdates);
+
         return key;
     }
 
