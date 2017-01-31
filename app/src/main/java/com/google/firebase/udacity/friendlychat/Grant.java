@@ -10,6 +10,8 @@ public class Grant {
     private String deadline;
     private String tags;
 
+    private String id;
+
     public Grant() {}
 
     public Grant(String grantName, String grantDescription) {
@@ -47,6 +49,14 @@ public class Grant {
 
     public void setDeadline(String deadline) {
         this.deadline = deadline;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
 

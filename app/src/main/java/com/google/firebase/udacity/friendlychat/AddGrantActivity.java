@@ -1,8 +1,10 @@
 package com.google.firebase.udacity.friendlychat;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -48,7 +50,7 @@ public class AddGrantActivity extends AppCompatActivity {
 
         //Initialize interface
 
-        grantName = (EditText)findViewById(R.id.grantName);
+        grantName = (EditText) findViewById(R.id.grantName);
         grantDescription = (EditText)findViewById(R.id.grantDescription);
         grantTagsEdit = (EditText)findViewById(R.id.grantTagsEdit);
         grantDeadlineEdit = (EditText)findViewById(R.id.grantDeadlineEdit);
@@ -75,7 +77,7 @@ public class AddGrantActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
                 Grant grant = dataSnapshot.getValue(Grant.class);
-
+                grant.setId(dataSnapshot.getKey());
                 grantsListAdapter.add(grant);
             }
 
@@ -97,6 +99,16 @@ public class AddGrantActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+
+        grantsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Grant grant = (Grant)grantsListAdapter.getItem(position);
+                Intent intent = new Intent(AddGrantActivity.this, GrantActivity.class);
+                intent.putExtra("grantId", grant.getId());
+                startActivity(intent);
             }
         });
     }
