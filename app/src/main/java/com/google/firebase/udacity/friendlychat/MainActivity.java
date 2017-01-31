@@ -15,9 +15,24 @@
  */
 package com.google.firebase.udacity.friendlychat;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.w3c.dom.Text;
+
+/*import android.support.annotation.NonNull;
+
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
@@ -44,10 +59,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+*/
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "MainActivity";
+    /*private static final String TAG = "MainActivity";
 
     public static final String ANONYMOUS = "anonymous";
     public static final int DEFAULT_MSG_LENGTH_LIMIT = 1000;
@@ -69,12 +84,80 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
 
+    */
+
+    //Firebase variables
+    private FirebaseDatabase grantsDB;
+    private DatabaseReference grantsReference;
+
+    //Interface variables
+    private EditText grantName;
+    private EditText grantDescription;
+    private Button publishButton;
+    //private TextView grantsText;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.grants_layout);
 
-        mUsername = ANONYMOUS;
+        //Initialize Firebase database and reference
+
+        grantsDB = FirebaseDatabase.getInstance();
+        grantsReference = grantsDB.getReference().child("grants");
+
+        //Initialize interface
+
+        grantName = (EditText)findViewById(R.id.grantName);
+        grantDescription = (EditText)findViewById(R.id.grantDescription);
+        publishButton = (Button)findViewById(R.id.publishButton);
+        //grantsText = (TextView)findViewById(R.id.grantsText);
+
+
+        publishButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /*Grant grant = new Grant(grantName.getText().toString(),
+                                        grantDescription.getText().toString());
+                grantsReference.push().setValue(grant);*/
+                Intent intent = new Intent(MainActivity.this, AddGrantActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        grantsReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Grant grant = dataSnapshot.getValue(Grant.class);
+                //grantsText.append(grant.getGrantName() + "\n");
+                //grantsText.append(grant.getGrantDescription() + "\n\n\n");
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+
+
+        /*mUsername = ANONYMOUS;
 
         //Init references to database
         mFirebaseDatabase = FirebaseDatabase.getInstance();
@@ -168,11 +251,14 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "Your are logged in!", Toast.LENGTH_LONG).show();
                 }
             }
-        };
+        };*/
 
     }
 
-    @Override
+
+
+
+    /*@Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main_menu, menu);
@@ -262,6 +348,6 @@ public class MainActivity extends AppCompatActivity {
             //Connects listener to specific reference in the database
             mMessagesDatabaseReference.addChildEventListener(mChildEventListener);
         }
-    }
+    }*/
 
 }
