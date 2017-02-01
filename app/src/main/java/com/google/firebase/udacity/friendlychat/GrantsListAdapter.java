@@ -14,8 +14,8 @@ public class GrantsListAdapter extends BaseAdapter {
     private ArrayList<Grant> grantsListData;
     private LayoutInflater layoutInflater;
 
-    public GrantsListAdapter(Context aContext, ArrayList<Grant> listData) {
-        this.grantsListData = listData;
+    public GrantsListAdapter(Context aContext) {
+        this.grantsListData = new ArrayList<>();
         layoutInflater = LayoutInflater.from(aContext);
     }
 

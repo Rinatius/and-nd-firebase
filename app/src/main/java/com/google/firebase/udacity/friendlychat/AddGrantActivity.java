@@ -34,7 +34,6 @@ public class AddGrantActivity extends AppCompatActivity {
 
     private ListView grantsListView;
     private GrantsListAdapter grantsListAdapter;
-    private ArrayList<Grant> grantItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +45,6 @@ public class AddGrantActivity extends AppCompatActivity {
         grantsDB = FirebaseDatabase.getInstance();
         grantsReference = grantsDB.getReference().child("grants");
 
-        //Initialize arrayList
-        grantItems = new ArrayList<>();
-
         //Initialize interface
 
         grantName = (EditText) findViewById(R.id.grantName);
@@ -59,7 +55,7 @@ public class AddGrantActivity extends AppCompatActivity {
         publishButton = (Button)findViewById(R.id.publishButton);
 
         grantsListView = (ListView)findViewById(R.id.grantsListView);
-        grantsListAdapter = new GrantsListAdapter(this, grantItems);
+        grantsListAdapter = new GrantsListAdapter(this);
         grantsListView.setAdapter(grantsListAdapter);
 
         publishButton.setOnClickListener(new View.OnClickListener() {
