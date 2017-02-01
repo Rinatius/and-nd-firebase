@@ -31,6 +31,7 @@ public class AddGrantActivity extends AppCompatActivity {
     private EditText grantTagsEdit;
     private EditText grantDeadlineEdit;
     private Button publishButton;
+
     private ListView grantsListView;
     private GrantsListAdapter grantsListAdapter;
     private ArrayList<Grant> grantItems;
@@ -56,6 +57,7 @@ public class AddGrantActivity extends AppCompatActivity {
         grantDeadlineEdit = (EditText)findViewById(R.id.grantDeadlineEdit);
 
         publishButton = (Button)findViewById(R.id.publishButton);
+
         grantsListView = (ListView)findViewById(R.id.grantsListView);
         grantsListAdapter = new GrantsListAdapter(this, grantItems);
         grantsListView.setAdapter(grantsListAdapter);
